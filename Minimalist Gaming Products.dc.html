@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#08080d; --bg2:#0d0d18; --card:#121221; --line:#1e1e33; --line2:#2f2f4d; --fg:#f0f0f5; --fg2:#c2c2d6; --mut:#8b8ba8; --mut2:#6a6a88; --acc:#6f63e8; --acch:#8577ff; --accink:#9d92ff; --btnink:#ffffff; --logo:none; }
+  html[data-theme="light"] { --bg:#faf9fd; --bg2:#f0eff8; --card:#ffffff; --line:#e3e1ef; --line2:#cfcce2; --fg:#14131f; --fg2:#3b3950; --mut:#6b6885; --mut2:#918eab; --acc:#5548d6; --acch:#6355e8; --accink:#5548d6; --btnink:#ffffff; --logo:invert(1) hue-rotate(180deg); }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: 'Space Grotesk', sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+  a { color: var(--fg); text-decoration: none; }
+  a:hover { color: var(--accink); }
+  ::selection { background: var(--acc); color: var(--btnink); }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: var(--bg); color: var(--fg);">
+  <header style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line);">
+    <a href="Minimalist%20Gaming%20Home.dc.html" style="display: flex; align-items: center; gap: 12px;">
+      <img src="https://minimalist-gaming.com/whitelogo.png" alt="Minimalist Gaming" style="height: 34px; width: auto; filter: var(--logo);">
+    </a>
+    <nav style="display: flex; gap: 36px; font-size: 14px; font-weight: 500; letter-spacing: 0.04em;">
+      <a href="Minimalist%20Gaming%20Home.dc.html" style="color: var(--mut);" style-hover="color: var(--fg);">Home</a>
+      <a href="#" style="color: var(--fg);">Products</a>
+      <a href="Minimalist%20Gaming%20Custom%20Pad.dc.html" style="color: var(--mut);" style-hover="color: var(--fg);">Custom</a>
+      <a href="#about" style="color: var(--mut);" style-hover="color: var(--fg);">About</a>
+      <a href="#faq" style="color: var(--mut);" style-hover="color: var(--fg);">FAQ</a>
+      <a href="#quiz" style="color: var(--mut);" style-hover="color: var(--fg);">Quiz</a>
+      <a href="#contact" style="color: var(--mut);" style-hover="color: var(--fg);">Contact</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button onClick="{{ toggleTheme }}" title="Toggle theme" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">{{ themeIcon }}</button>
+      <a href="#" style="background: var(--acc); color: var(--btnink); font-weight: 600; font-size: 14px; padding: 10px 22px; border-radius: 2px; letter-spacing: 0.02em;" style-hover="background: var(--acch); color: var(--btnink);">Shop Now</a>
+    </div>
+  </header>
+
+  <section style="max-width: 1280px; margin: 0 auto; padding: 72px 48px 32px; display: flex; flex-direction: column; gap: 16px;">
+    <div style="display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--accink); text-transform: uppercase;">
+      <span style="width: 24px; height: 1px; background: var(--accink); display: inline-block;"></span>
+      The Collection
+    </div>
+    <h1 style="margin: 0; font-size: 56px; font-weight: 700; letter-spacing: -0.03em;">All Mousepads</h1>
+    <p style="margin: 0; font-size: 17px; line-height: 1.6; color: var(--mut); max-width: 480px; text-wrap: pretty;">{{ count }} designs. One spec: 900 &times; 400 mm, stitched edges, non-slip base.</p>
+    <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+        <button onClick="{{ f.onClick }}" style="background: {{ f.bg }}; color: {{ f.color }}; border: 1px solid {{ f.border }}; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; padding: 8px 16px; border-radius: 2px; cursor: pointer; text-transform: uppercase;">{{ f.label }}</button>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="max-width: 1280px; margin: 0 auto; padding: 24px 48px 88px;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="9">
+        <div style="display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; transition: border-color 0.2s, transform 0.2s;" style-hover="border-color: var(--line2); transform: translateY(-4px);">
+          <div style="position: relative; aspect-ratio: 9 / 4; overflow: hidden; background: var(--bg2);">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <sc-if value="{{ p.low }}" hint-placeholder-val="{{ false }}">
+              <span style="position: absolute; top: 12px; left: 12px; background: var(--bg); color: var(--accink); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; padding: 5px 10px; border-radius: 2px; text-transform: uppercase;">Low stock</span>
+            </sc-if>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+              <span style="font-size: 17px; font-weight: 600;">{{ p.name }}</span>
+              <span style="font-size: 17px; font-weight: 700; color: var(--accink); white-space: nowrap;">&#2547; {{ p.price }}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mut2);">900 &times; 400 MM &middot; IN STOCK</span>
+              <button onClick="{{ p.onOrder }}" style="background: transparent; border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 2px; cursor: pointer;" style-hover="border-color: var(--accink); color: var(--accink);">Quick Order</button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <footer id="contact" style="border-top: 1px solid var(--line);">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 24px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--mut2);">&copy; 2026 Minimalist Gaming. All rights reserved.</span>
+      <div style="display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">
+        <a href="https://example.com/facebook" style="color: var(--mut);" style-hover="color: var(--accink);">Facebook</a>
+        <a href="https://example.com/instagram" style="color: var(--mut);" style-hover="color: var(--accink);">Instagram</a>
+        <a href="https://example.com/youtube" style="color: var(--mut);" style-hover="color: var(--accink);">YouTube</a>
+        <a href="https://example.com/tiktok" style="color: var(--mut);" style-hover="color: var(--accink);">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <sc-if value="{{ orderOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeOrder }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 24px; overflow: auto;">
+      <div onClick="{{ stopProp }}" style="background: var(--card); border: 1px solid var(--line2); border-radius: 4px; width: 940px; max-width: 100%; max-height: 88vh; overflow: auto; display: grid; grid-template-columns: 1fr 1fr;">
+        <!-- Left: item summary -->
+        <div style="padding: 32px; border-right: 1px solid var(--line); background: var(--bg2); display: flex; flex-direction: column; gap: 20px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--mut2); text-transform: uppercase;">Your order</span>
+          <img src="{{ orderImg }}" alt="{{ orderName }}" style="width: 100%; border-radius: 3px; border: 1px solid var(--line);">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 20px; font-weight: 600;">{{ orderName }}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mut2);">900 &times; 400 MM &middot; STITCHED EDGE</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--mut2); text-transform: uppercase;">Quantity</span>
+            <button onClick="{{ qtyDown }}" style="width: 32px; height: 32px; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">&minus;</button>
+            <span style="font-size: 16px; font-weight: 600; min-width: 20px; text-align: center;">{{ qty }}</span>
+            <button onClick="{{ qtyUp }}" style="width: 32px; height: 32px; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">+</button>
+          </div>
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; color: var(--mut);">
+              <span>Unit price</span><span>&#2547; {{ orderPrice }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--mut);">
+              <span>Delivery</span><span>{{ deliveryLabel }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px; border-top: 1px solid var(--line);">
+              <span style="font-size: 15px; font-weight: 600;">Total</span>
+              <span style="font-size: 22px; font-weight: 700; color: var(--accink);">&#2547; {{ orderTotal }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- Right: details form -->
+        <div style="padding: 32px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <h3 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">Checkout</h3>
+              <span style="font-size: 13px; color: var(--mut);">Cash on delivery. We call to confirm before dispatch.</span>
+            </div>
+            <button onClick="{{ closeOrder }}" style="background: none; border: none; color: var(--mut); font-size: 22px; cursor: pointer; line-height: 1;" style-hover="color: var(--fg);">&times;</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Full name
+              <input type="text" placeholder="Your name" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Phone
+              <input type="tel" placeholder="01XXXXXXXXX" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+            </label>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Email (optional)
+            <input type="email" placeholder="you@example.com" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Delivery address
+            <textarea rows="2" placeholder="House, road, area" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none; resize: vertical;" style-focus="border-color: var(--accink);"></textarea>
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Delivery zone</span>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <sc-for list="{{ zones }}" as="z" hint-placeholder-count="2">
+                <button onClick="{{ z.onClick }}" style="display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left; background: {{ z.bg }}; border: 1px solid {{ z.border }}; color: var(--fg); font-family: 'Space Grotesk', sans-serif; padding: 11px 12px; border-radius: 2px; cursor: pointer;">
+                  <span style="font-size: 14px; font-weight: 600;">{{ z.name }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--mut);">{{ z.days }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.5; color: var(--mut); cursor: pointer;">
+            <input type="checkbox" checked="{{ agreed }}" onChange="{{ toggleAgree }}" style="margin-top: 2px; accent-color: var(--acc); width: 15px; height: 15px;">
+            <span>I read and agree to the <a href="#" style="color: var(--accink);">Terms &amp; Conditions</a>, <a href="#" style="color: var(--accink);">Privacy Policy</a>, and <a href="#" style="color: var(--accink);">Return &amp; Refund Policy</a>.</span>
+          </label>
+          <div style="display: flex; gap: 12px; margin-top: 4px;">
+            <button onClick="{{ closeOrder }}" style="border: 1px solid var(--line2); background: transparent; color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 14px; padding: 14px 22px; border-radius: 2px; cursor: pointer;" style-hover="border-color: var(--accink); color: var(--accink);">Cancel</button>
+            <button onClick="{{ closeOrder }}" disabled="{{ notAgreed }}" style="flex: 1; background: var(--acc); color: var(--btnink); border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px; border-radius: 2px; cursor: pointer; opacity: {{ submitOpacity }};" style-hover="background: var(--acch);">Place Order &middot; &#2547; {{ orderTotal }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filter: 'All', orderIdx: -1, qty: 1, zone: 0, agreed: false, theme: (typeof localStorage !== 'undefined' && localStorage.getItem('mg-theme')) || 'dark' };
+  data = [
+    { name: 'Cybernetic Head', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f668af1b6_Minimalist_posts_part_4_Cyber_head.png' },
+    { name: 'Abstract', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f684de6b4_Minimalist_posts_part_4_MS_blue_pink.png' },
+    { name: 'Abstract Green', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f69771ac7_Minimalist_posts_part_4_MS_green_white.png' },
+    { name: 'Abstract Purple Orange', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f6adc9910_Minimalist_posts_part_4_MS_orange_pink_blue.png' },
+    { name: 'Abstract Sea Blue', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f6caed955_Minimalist_posts_part_4_MS_sea.png' },
+    { name: 'Abstract Doodle Pattern', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f6e15af1b_Minimalist_posts_part_4_Purple_box_pattern.png' },
+    { name: 'Abstract Red White', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f6f20198e_Minimalist_posts_part_4_red_white.png' },
+    { name: 'Carina Nebula', price: 2000, cat: 'Art', img: 'https://minimalist-gaming.com/Products/6976f7009c6a5_Minimalist_posts_part_4_Telescope_1.png' },
+    { name: 'Valorant', price: 2000, cat: 'Gaming', img: 'https://minimalist-gaming.com/Products/6976f70ff2cfd_Minimalist_posts_part_4_Valorant_fracture.png' },
+    { name: 'Pixel Dino City', price: 2000, cat: 'Art', img: 'https://minimalist-gaming.com/Products/6976f72659f43_Minimalist_posts_part_5_1.png' },
+    { name: 'Mild Caffeine', price: 2000, cat: 'Art', img: 'https://minimalist-gaming.com/Products/6976f74b694bb_Minimalist_posts_part_5_2.png' },
+    { name: 'Great Wave', price: 2000, cat: 'Art', low: true, img: 'https://minimalist-gaming.com/Products/6976f75984671_Minimalist_posts_part_5_3.png' },
+    { name: 'Abstract Pink Blue', price: 2000, cat: 'Abstract', img: 'https://minimalist-gaming.com/Products/6976f76fe870e_Minimalist_posts_part_5_6.png' },
+    { name: 'Demon Slayer Nezuko', price: 2000, cat: 'Anime', low: true, img: 'https://minimalist-gaming.com/Products/6976f7827b261_Minimalist_posts_part_5_8.png' },
+    { name: 'Venom', price: 2000, cat: 'Comics', img: 'https://minimalist-gaming.com/Products/6976f792040ca_Minimalist_posts_part_5_10.png' },
+    { name: 'Spiderman Trio', price: 2000, cat: 'Comics', img: 'https://minimalist-gaming.com/Products/6976f7a0adf26_Minimalist_posts_part_5_11.png' },
+    { name: 'Spiderverse', price: 2000, cat: 'Comics', img: 'https://minimalist-gaming.com/Products/6976f7b168512_Minimalist_posts_part_5_12.png' },
+    { name: 'Spiderverse Falling', price: 1900, cat: 'Comics', low: true, img: 'https://minimalist-gaming.com/Products/6976f7c283ae3_Minimalist_posts_part_5_13.png' }
+  ];
+  componentDidMount() { document.documentElement.dataset.theme = this.state.theme; }
+  renderVals() {
+    const { filter, orderIdx, qty, theme, zone, agreed } = this.state;
+    const zoneList = [{ name: 'Inside Dhaka', days: '5 DAYS' }, { name: 'Outside Dhaka', days: '10 DAYS' }];
+    const cats = ['All', 'Abstract', 'Art', 'Gaming', 'Anime', 'Comics'];
+    const shown = filter === 'All' ? this.data : this.data.filter(p => p.cat === filter);
+    const cur = this.data[orderIdx];
+    return {
+      count: this.data.length,
+      themeIcon: theme === 'dark' ? '\u263C' : '\u263E',
+      toggleTheme: () => {
+        const t = this.state.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = t;
+        try { localStorage.setItem('mg-theme', t); } catch (e) {}
+        this.setState({ theme: t });
+      },
+      filters: cats.map(c => ({
+        label: c,
+        bg: c === filter ? 'var(--acc)' : 'transparent',
+        color: c === filter ? 'var(--btnink)' : 'var(--mut)',
+        border: c === filter ? 'var(--acc)' : 'var(--line2)',
+        onClick: () => this.setState({ filter: c })
+      })),
+      products: shown.map(p => ({
+        ...p, price: p.price.toLocaleString(), low: !!p.low,
+        onOrder: () => this.setState({ orderIdx: this.data.indexOf(p), qty: 1, agreed: false })
+      })),
+      orderOpen: orderIdx >= 0,
+      zones: zoneList.map((z, i) => ({
+        ...z,
+        bg: i === zone ? 'color-mix(in srgb, var(--acc) 14%, transparent)' : 'var(--bg2)',
+        border: i === zone ? 'var(--acc)' : 'var(--line2)',
+        onClick: () => this.setState({ zone: i })
+      })),
+      deliveryLabel: zoneList[zone].name + ' \u00b7 ' + zoneList[zone].days.toLowerCase(),
+      agreed,
+      notAgreed: !agreed,
+      submitOpacity: agreed ? 1 : 0.45,
+      toggleAgree: () => this.setState(s => ({ agreed: !s.agreed })),
+      orderName: cur ? cur.name : '',
+      orderImg: cur ? cur.img : '',
+      orderPrice: cur ? cur.price.toLocaleString() : '',
+      orderTotal: cur ? (cur.price * qty).toLocaleString() : '',
+      qty,
+      qtyUp: () => this.setState(s => ({ qty: Math.min(9, s.qty + 1) })),
+      qtyDown: () => this.setState(s => ({ qty: Math.max(1, s.qty - 1) })),
+      closeOrder: () => this.setState({ orderIdx: -1 }),
+      stopProp: (e) => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>

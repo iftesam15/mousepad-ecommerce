@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#08080d; --bg2:#0d0d18; --card:#121221; --line:#1e1e33; --line2:#2f2f4d; --fg:#f0f0f5; --fg2:#c2c2d6; --mut:#8b8ba8; --mut2:#6a6a88; --acc:#6f63e8; --acch:#8577ff; --accink:#9d92ff; --btnink:#ffffff; --logo:none; }
+  html[data-theme="light"] { --bg:#faf9fd; --bg2:#f0eff8; --card:#ffffff; --line:#e3e1ef; --line2:#cfcce2; --fg:#14131f; --fg2:#3b3950; --mut:#6b6885; --mut2:#918eab; --acc:#5548d6; --acch:#6355e8; --accink:#5548d6; --btnink:#ffffff; --logo:invert(1) hue-rotate(180deg); }
+  html, body { margin: 0; padding: 0; background: var(--bg); }
+  body { font-family: 'Space Grotesk', sans-serif; color: var(--fg); -webkit-font-smoothing: antialiased; }
+  a { color: var(--fg); text-decoration: none; }
+  a:hover { color: var(--accink); }
+  ::selection { background: var(--acc); color: var(--btnink); }
+  @keyframes mg-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+</style>
+</helmet>
+<div style="min-height: 100vh; background: var(--bg); color: var(--fg);">
+  <!-- Nav -->
+  <header style="position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0 48px; height: 72px; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(16px); border-bottom: 1px solid var(--line);">
+    <a href="#" style="display: flex; align-items: center; gap: 12px;">
+      <img src="https://minimalist-gaming.com/whitelogo.png" alt="Minimalist Gaming" style="height: 34px; width: auto; filter: var(--logo);">
+    </a>
+    <nav style="display: flex; gap: 36px; font-size: 14px; font-weight: 500; letter-spacing: 0.04em;">
+      <a href="#" style="color: var(--fg);">Home</a>
+      <a href="Minimalist%20Gaming%20Products.dc.html" style="color: var(--mut);" style-hover="color: var(--fg);">Products</a>
+      <a href="Minimalist%20Gaming%20Custom%20Pad.dc.html" style="color: var(--mut);" style-hover="color: var(--fg);">Custom</a>
+      <a href="#about" style="color: var(--mut);" style-hover="color: var(--fg);">About</a>
+      <a href="#faq" style="color: var(--mut);" style-hover="color: var(--fg);">FAQ</a>
+      <a href="#quiz" style="color: var(--mut);" style-hover="color: var(--fg);">Quiz</a>
+      <a href="#contact" style="color: var(--mut);" style-hover="color: var(--fg);">Contact</a>
+    </nav>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <button onClick="{{ toggleTheme }}" title="Toggle theme" style="width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">{{ themeIcon }}</button>
+      <a href="Minimalist%20Gaming%20Products.dc.html" style="background: var(--acc); color: var(--btnink); font-weight: 600; font-size: 14px; padding: 10px 22px; border-radius: 2px; letter-spacing: 0.02em;" style-hover="background: var(--acch); color: var(--btnink);">Shop Now</a>
+    </div>
+  </header>
+
+  <!-- Hero banner carousel -->
+  <section style="position: relative; border-bottom: 1px solid var(--line); background: var(--bg2);">
+    <div style="position: relative; max-width: 1600px; margin: 0 auto; aspect-ratio: 16 / 6; overflow: hidden;">
+      <sc-for list="{{ slides }}" as="s" hint-placeholder-count="1">
+        <img src="{{ s.src }}" alt="{{ s.alt }}" style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: {{ s.opacity }}; transition: opacity 0.7s ease;">
+      </sc-for>
+      <button onClick="{{ prevSlide }}" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; background: rgba(8,8,13,0.5); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 2px; cursor: pointer; font-size: 18px; z-index: 3;" style-hover="background: rgba(8,8,13,0.85);">&larr;</button>
+      <button onClick="{{ nextSlide }}" style="position: absolute; right: 20px; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; background: rgba(8,8,13,0.5); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 2px; cursor: pointer; font-size: 18px; z-index: 3;" style-hover="background: rgba(8,8,13,0.85);">&rarr;</button>
+      <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 3;">
+        <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+          <button onClick="{{ d.onClick }}" style="width: 28px; height: 4px; background: {{ d.bg }}; border: none; border-radius: 2px; cursor: pointer; padding: 0;"></button>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- Headline -->
+  <section style="max-width: 1280px; margin: 0 auto; padding: 88px 48px 72px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: end;">
+    <div style="display: flex; flex-direction: column; gap: 24px;">
+      <div style="display: flex; align-items: center; gap: 10px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--accink); text-transform: uppercase;">
+        <span style="width: 24px; height: 1px; background: var(--accink); display: inline-block;"></span>
+        Dhaka, Bangladesh &middot; Since 2021
+      </div>
+      <h1 style="margin: 0; font-size: 72px; line-height: 0.98; font-weight: 700; letter-spacing: -0.03em; text-wrap: balance;">Game<br>Unapologetically</h1>
+      <p style="margin: 0; font-size: 18px; line-height: 1.6; color: var(--mut); max-width: 440px; text-wrap: pretty;">Premium minimalist gaming mousepads engineered for peak performance.</p>
+      <div style="display: flex; gap: 16px; margin-top: 4px;">
+        <a href="Minimalist%20Gaming%20Products.dc.html" style="background: var(--acc); color: var(--btnink); font-weight: 600; font-size: 15px; padding: 15px 32px; border-radius: 2px;" style-hover="background: var(--acch); color: var(--btnink);">Shop Mousepads</a>
+        <a href="#quiz" style="border: 1px solid var(--line2); color: var(--fg); font-weight: 500; font-size: 15px; padding: 15px 32px; border-radius: 2px;" style-hover="border-color: var(--accink); color: var(--accink);">Know Your Skates</a>
+      </div>
+    </div>
+    <div style="display: flex; gap: 48px; justify-content: flex-end; padding-bottom: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 32px; font-weight: 700; letter-spacing: -0.02em;">6,000+</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--mut); text-transform: uppercase;">Orders shipped</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 32px; font-weight: 700; letter-spacing: -0.02em;">1,000+</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--mut); text-transform: uppercase;">Happy clients</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <span style="font-size: 32px; font-weight: 700; letter-spacing: -0.02em;">2021</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.14em; color: var(--mut); text-transform: uppercase;">Est. Dhaka</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Marquee strip -->
+  <div style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; overflow: hidden; background: var(--bg2);">
+    {{ marquee }}
+  </div>
+
+  <!-- Products -->
+  <section id="products" style="max-width: 1280px; margin: 0 auto; padding: 88px 48px;">
+    <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 40px;">
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--accink); text-transform: uppercase;">The Collection</span>
+        <h2 style="margin: 0; font-size: 44px; font-weight: 700; letter-spacing: -0.02em;">Featured Mousepads</h2>
+      </div>
+      <a href="Minimalist%20Gaming%20Products.dc.html" style="font-size: 14px; font-weight: 500; color: var(--mut); border-bottom: 1px solid var(--line2); padding-bottom: 2px;" style-hover="color: var(--accink); border-color: var(--accink);">View all 18 designs &rarr;</a>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="6">
+        <div style="display: flex; flex-direction: column; background: var(--card); border: 1px solid var(--line); border-radius: 4px; overflow: hidden; transition: border-color 0.2s, transform 0.2s;" style-hover="border-color: var(--line2); transform: translateY(-4px);">
+          <div style="position: relative; aspect-ratio: 9 / 4; overflow: hidden; background: var(--bg2);">
+            <img src="{{ p.img }}" alt="{{ p.name }}" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            <sc-if value="{{ p.low }}" hint-placeholder-val="{{ false }}">
+              <span style="position: absolute; top: 12px; left: 12px; background: var(--bg); color: var(--accink); font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; padding: 5px 10px; border-radius: 2px; text-transform: uppercase;">Low stock</span>
+            </sc-if>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 10px; padding: 20px;">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+              <span style="font-size: 17px; font-weight: 600;">{{ p.name }}</span>
+              <span style="font-size: 17px; font-weight: 700; color: var(--accink); white-space: nowrap;">&#2547; {{ p.price }}</span>
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mut2);">900 &times; 400 MM &middot; IN STOCK</span>
+              <button onClick="{{ p.onOrder }}" style="background: transparent; border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 13px; font-weight: 600; padding: 8px 16px; border-radius: 2px; cursor: pointer;" style-hover="border-color: var(--accink); color: var(--accink);">Quick Order</button>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- Quiz band -->
+  <section id="quiz" style="border-top: 1px solid var(--line); background: var(--bg2);">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 72px 48px; display: flex; align-items: center; justify-content: space-between; gap: 48px;">
+      <div style="display: flex; flex-direction: column; gap: 12px; max-width: 560px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.18em; color: var(--accink); text-transform: uppercase;">Not sure what to pick?</span>
+        <h2 style="margin: 0; font-size: 36px; font-weight: 700; letter-spacing: -0.02em;">Know Your Skates</h2>
+        <p style="margin: 0; font-size: 16px; line-height: 1.6; color: var(--mut); text-wrap: pretty;">Take our 60-second quiz and we'll match you with the surface, size, and glide that fits your aim style.</p>
+      </div>
+      <a href="#quiz" style="flex-shrink: 0; background: var(--acc); color: var(--btnink); font-weight: 600; font-size: 15px; padding: 16px 36px; border-radius: 2px;" style-hover="background: var(--acch); color: var(--btnink);">Take the Quiz</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contact" style="border-top: 1px solid var(--line);">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 64px 48px 32px; display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.3fr; gap: 48px;">
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <img src="https://minimalist-gaming.com/whitelogo.png" alt="Minimalist Gaming" style="height: 30px; width: auto; align-self: flex-start; filter: var(--logo);">
+        <p style="margin: 0; font-size: 14px; line-height: 1.6; color: var(--mut); max-width: 280px;">Premium gaming mousepads engineered for performance and designed for minimalists.</p>
+        <p style="margin: 0; font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.7; color: var(--mut2);">Alex Rahman, Managing Director<br>Jordan Hasan, Co-founder</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--mut2); text-transform: uppercase;">Quick Links</span>
+        <a href="#" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Home</a>
+        <a href="Minimalist%20Gaming%20Products.dc.html" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Products</a>
+        <a href="#about" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">About Us</a>
+        <a href="#faq" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">FAQ</a>
+        <a href="#contact" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Contact Us</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--mut2); text-transform: uppercase;">Policies</span>
+        <a href="#" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Terms &amp; Conditions</a>
+        <a href="#" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Privacy Policy</a>
+        <a href="#" style="font-size: 14px; color: var(--fg2);" style-hover="color: var(--accink);">Return &amp; Refund Policy</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px; font-size: 13px; line-height: 1.7; color: var(--mut);">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--mut2); text-transform: uppercase;">Contact</span>
+        <span>hello@example.com<br>+8801000-000000</span>
+        <span>House # 12, Road # 5, Sample Housing, Demo City, Dhaka-1000, Bangladesh</span>
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--mut2);">Trade License: TRAD/DNCC/000000/2025<br>Delivery: Dhaka 5 days &middot; Outside 10 days</span>
+      </div>
+    </div>
+    <div style="border-top: 1px solid var(--line);">
+      <div style="max-width: 1280px; margin: 0 auto; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; gap: 24px;">
+        <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--mut2);">&copy; 2026 Minimalist Gaming. All rights reserved.</span>
+        <div style="display: flex; gap: 24px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;">
+          <a href="https://example.com/facebook" style="color: var(--mut);" style-hover="color: var(--accink);">Facebook</a>
+          <a href="https://example.com/instagram" style="color: var(--mut);" style-hover="color: var(--accink);">Instagram</a>
+          <a href="https://example.com/youtube" style="color: var(--mut);" style-hover="color: var(--accink);">YouTube</a>
+          <a href="https://example.com/tiktok" style="color: var(--mut);" style-hover="color: var(--accink);">TikTok</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Quick Order modal -->
+  <sc-if value="{{ orderOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeOrder }}" style="position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px); display: flex; align-items: center; justify-content: center; padding: 24px; overflow: auto;">
+      <div onClick="{{ stopProp }}" style="background: var(--card); border: 1px solid var(--line2); border-radius: 4px; width: 940px; max-width: 100%; max-height: 88vh; overflow: auto; display: grid; grid-template-columns: 1fr 1fr;">
+        <!-- Left: item summary -->
+        <div style="padding: 32px; border-right: 1px solid var(--line); background: var(--bg2); display: flex; flex-direction: column; gap: 20px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--mut2); text-transform: uppercase;">Your order</span>
+          <img src="{{ orderImg }}" alt="{{ orderName }}" style="width: 100%; border-radius: 3px; border: 1px solid var(--line);">
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <span style="font-size: 20px; font-weight: 600;">{{ orderName }}</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--mut2);">900 &times; 400 MM &middot; STITCHED EDGE</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--mut2); text-transform: uppercase;">Quantity</span>
+            <button onClick="{{ qtyDown }}" style="width: 32px; height: 32px; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">&minus;</button>
+            <span style="font-size: 16px; font-weight: 600; min-width: 20px; text-align: center;">{{ qty }}</span>
+            <button onClick="{{ qtyUp }}" style="width: 32px; height: 32px; background: transparent; border: 1px solid var(--line2); color: var(--fg); border-radius: 2px; cursor: pointer; font-size: 15px;" style-hover="border-color: var(--accink); color: var(--accink);">+</button>
+          </div>
+          <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 14px;">
+            <div style="display: flex; justify-content: space-between; color: var(--mut);">
+              <span>Unit price</span><span>&#2547; {{ orderPrice }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; color: var(--mut);">
+              <span>Delivery</span><span>{{ deliveryLabel }}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; padding-top: 10px; border-top: 1px solid var(--line);">
+              <span style="font-size: 15px; font-weight: 600;">Total</span>
+              <span style="font-size: 22px; font-weight: 700; color: var(--accink);">&#2547; {{ orderTotal }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- Right: details form -->
+        <div style="padding: 32px; display: flex; flex-direction: column; gap: 18px;">
+          <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;">
+            <div style="display: flex; flex-direction: column; gap: 4px;">
+              <h3 style="margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -0.01em;">Checkout</h3>
+              <span style="font-size: 13px; color: var(--mut);">Cash on delivery. We call to confirm before dispatch.</span>
+            </div>
+            <button onClick="{{ closeOrder }}" style="background: none; border: none; color: var(--mut); font-size: 22px; cursor: pointer; line-height: 1;" style-hover="color: var(--fg);">&times;</button>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+            <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Full name
+              <input type="text" placeholder="Your name" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+            </label>
+            <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Phone
+              <input type="tel" placeholder="01XXXXXXXXX" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+            </label>
+          </div>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Email (optional)
+            <input type="email" placeholder="you@example.com" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none;" style-focus="border-color: var(--accink);">
+          </label>
+          <label style="display: flex; flex-direction: column; gap: 6px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Delivery address
+            <textarea rows="2" placeholder="House, road, area" style="background: var(--bg2); border: 1px solid var(--line2); color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-size: 14px; padding: 11px 12px; border-radius: 2px; outline: none; resize: vertical;" style-focus="border-color: var(--accink);"></textarea>
+          </label>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; color: var(--mut2); text-transform: uppercase;">Delivery zone</span>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+              <sc-for list="{{ zones }}" as="z" hint-placeholder-count="2">
+                <button onClick="{{ z.onClick }}" style="display: flex; flex-direction: column; gap: 3px; align-items: flex-start; text-align: left; background: {{ z.bg }}; border: 1px solid {{ z.border }}; color: var(--fg); font-family: 'Space Grotesk', sans-serif; padding: 11px 12px; border-radius: 2px; cursor: pointer;">
+                  <span style="font-size: 14px; font-weight: 600;">{{ z.name }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--mut);">{{ z.days }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 12px; line-height: 1.5; color: var(--mut); cursor: pointer;">
+            <input type="checkbox" checked="{{ agreed }}" onChange="{{ toggleAgree }}" style="margin-top: 2px; accent-color: var(--acc); width: 15px; height: 15px;">
+            <span>I read and agree to the <a href="#" style="color: var(--accink);">Terms &amp; Conditions</a>, <a href="#" style="color: var(--accink);">Privacy Policy</a>, and <a href="#" style="color: var(--accink);">Return &amp; Refund Policy</a>.</span>
+          </label>
+          <div style="display: flex; gap: 12px; margin-top: 4px;">
+            <button onClick="{{ closeOrder }}" style="border: 1px solid var(--line2); background: transparent; color: var(--fg); font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 14px; padding: 14px 22px; border-radius: 2px; cursor: pointer;" style-hover="border-color: var(--accink); color: var(--accink);">Cancel</button>
+            <button onClick="{{ closeOrder }}" disabled="{{ notAgreed }}" style="flex: 1; background: var(--acc); color: var(--btnink); border: none; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 15px; padding: 14px; border-radius: 2px; cursor: pointer; opacity: {{ submitOpacity }};" style-hover="background: var(--acch);">Place Order &middot; &#2547; {{ orderTotal }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { orderIdx: -1, qty: 1, slide: 0, zone: 0, agreed: false, theme: (typeof localStorage !== 'undefined' && localStorage.getItem('mg-theme')) || 'dark' };
+  banners = [
+    { src: 'https://minimalist-gaming.com/Hero_Baner/Hide%20Series%20Banner.png', alt: 'Hide Series' },
+    { src: 'https://minimalist-gaming.com/Hero_Baner/MGglide%20Banner.png', alt: 'MGglide' },
+    { src: 'https://minimalist-gaming.com/Hero_Baner/MGweave%20Banner.png', alt: 'MGweave' }
+  ];
+  data = [
+    { name: 'Cybernetic Head', price: 2000, img: 'https://minimalist-gaming.com/Products/6976f668af1b6_Minimalist_posts_part_4_Cyber_head.png' },
+    { name: 'Carina Nebula', price: 2000, img: 'https://minimalist-gaming.com/Products/6976f7009c6a5_Minimalist_posts_part_4_Telescope_1.png' },
+    { name: 'Great Wave', price: 2000, low: true, img: 'https://minimalist-gaming.com/Products/6976f75984671_Minimalist_posts_part_5_3.png' },
+    { name: 'Valorant', price: 2000, img: 'https://minimalist-gaming.com/Products/6976f70ff2cfd_Minimalist_posts_part_4_Valorant_fracture.png' },
+    { name: 'Pixel Dino City', price: 2000, img: 'https://minimalist-gaming.com/Products/6976f72659f43_Minimalist_posts_part_5_1.png' },
+    { name: 'Mild Caffeine', price: 2000, img: 'https://minimalist-gaming.com/Products/6976f74b694bb_Minimalist_posts_part_5_2.png' }
+  ];
+  componentDidMount() {
+    document.documentElement.dataset.theme = this.state.theme;
+    this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % this.banners.length })), 5000);
+  }
+  componentWillUnmount() { clearInterval(this.timer); }
+  get marqueeEl() {
+    if (!this._mq) {
+      const items = ['900 \u00d7 400 mm XL surface', 'Stitched anti-fray edges', 'Speed & control hybrid weave', 'Non-slip rubber base', 'Nationwide delivery'];
+      const group = (key) => React.createElement('div', { key, style: { display: 'flex', gap: '56px', paddingRight: '56px', alignItems: 'center' } },
+        items.flatMap((t, i) => [
+          React.createElement('span', { key: 't' + i }, t),
+          React.createElement('span', { key: 'd' + i, style: { color: 'var(--accink)' } }, '\u25c6')
+        ]));
+      this._mq = React.createElement('div', {
+        style: { display: 'flex', width: 'max-content', whiteSpace: 'nowrap', fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', letterSpacing: '0.16em', textTransform: 'uppercase', color: 'var(--mut2)', animation: 'mg-marquee 32s linear infinite' }
+      }, [group('a'), group('b')]);
+    }
+    return this._mq;
+  }
+  renderVals() {
+    const { orderIdx, qty, slide, theme, zone, agreed } = this.state;
+    const zoneList = [{ name: 'Inside Dhaka', days: '5 DAYS' }, { name: 'Outside Dhaka', days: '10 DAYS' }];
+    const n = this.banners.length;
+    const go = (i) => {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => this.setState(s => ({ slide: (s.slide + 1) % n })), 5000);
+      this.setState({ slide: ((i % n) + n) % n });
+    };
+    const cur = this.data[orderIdx];
+    return {
+      marquee: this.marqueeEl,
+      slides: this.banners.map((b, i) => ({ ...b, opacity: i === slide ? 1 : 0 })),
+      dots: this.banners.map((b, i) => ({ bg: i === slide ? 'var(--acc)' : 'rgba(255,255,255,0.35)', onClick: () => go(i) })),
+      prevSlide: () => go(slide - 1),
+      nextSlide: () => go(slide + 1),
+      themeIcon: theme === 'dark' ? '\u263C' : '\u263E',
+      toggleTheme: () => {
+        const t = this.state.theme === 'dark' ? 'light' : 'dark';
+        document.documentElement.dataset.theme = t;
+        try { localStorage.setItem('mg-theme', t); } catch (e) {}
+        this.setState({ theme: t });
+      },
+      products: this.data.map(p => ({
+        ...p, price: p.price.toLocaleString(), low: !!p.low,
+        onOrder: () => this.setState({ orderIdx: this.data.indexOf(p), qty: 1, agreed: false })
+      })),
+      orderOpen: orderIdx >= 0,
+      zones: zoneList.map((z, i) => ({
+        ...z,
+        bg: i === zone ? 'color-mix(in srgb, var(--acc) 14%, transparent)' : 'var(--bg2)',
+        border: i === zone ? 'var(--acc)' : 'var(--line2)',
+        onClick: () => this.setState({ zone: i })
+      })),
+      deliveryLabel: zoneList[zone].name + ' \u00b7 ' + zoneList[zone].days.toLowerCase(),
+      agreed,
+      notAgreed: !agreed,
+      submitOpacity: agreed ? 1 : 0.45,
+      toggleAgree: () => this.setState(s => ({ agreed: !s.agreed })),
+      orderName: cur ? cur.name : '',
+      orderImg: cur ? cur.img : '',
+      orderPrice: cur ? cur.price.toLocaleString() : '',
+      orderTotal: cur ? (cur.price * qty).toLocaleString() : '',
+      qty,
+      qtyUp: () => this.setState(s => ({ qty: Math.min(9, s.qty + 1) })),
+      qtyDown: () => this.setState(s => ({ qty: Math.max(1, s.qty - 1) })),
+      closeOrder: () => this.setState({ orderIdx: -1 }),
+      stopProp: (e) => e.stopPropagation()
+    };
+  }
+}
+</script>
+</body>
+</html>
